@@ -9,9 +9,9 @@ import math
 class Triso(Comp):
 
     def __init__(self,
-                 coating_t_list, 
-                 fuel_list, 
-                 dr_config=None, 
+                 coating_t_list,
+                 fuel_list,
+                 dr_config=None,
                  dir_name='serp_input'):
         '''
         coating_t_list: non_fuel coating layers temperatures in a list
@@ -23,7 +23,7 @@ class Triso(Comp):
         elif dr_config =='homogenized':
             assert len(coating_t_list) == 1, 'wrong temperature number %d' %len(coating_t_list)
         else:
-            raise ValueError, 'triso dr_config not implemented'
+            print(ValueError, 'triso dr_config not implemented')
 
         # materials
         self.mat_list = []

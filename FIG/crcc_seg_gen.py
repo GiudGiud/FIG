@@ -19,8 +19,8 @@ class CRCCSegGen(Gen):
                 subcomp = a_seg.sub_comps[key]
                 CRCC_text.append('\n%%---%s\n'%key)
                 for key2 in subcomp.comp_dict:
-                    subcomp.comp_dict[key2].gen.set_univId(a_seg.channels.values()[0].fill.gen.univ.id)
+                    subcomp.comp_dict[key2].gen.set_univId(list(a_seg.channels.values())[0].fill.gen.univ.id)
                     CRCC_text.append('\n%%---%s\n'%key2)
                     CRCC_text.append(subcomp.comp_dict[key2].generate_output())
-                CRCC_text.append(subcomp.comp_dict.values()[0].fill.generate_output())
+                CRCC_text.append(list(subcomp.comp_dict.values())[0].fill.generate_output())
       return ''.join(CRCC_text)

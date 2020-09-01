@@ -19,10 +19,10 @@
 #create_the_model(gen_dir_name,
 #                 hasRods=[True, True, False, False])
 
-#from core_models.XS_gen import create_models
+from core_models.XS_gen import create_models
 
-#folder = 'res/XS_gen_eq_500/'
-#create_models(500, folder, fuel_type='eq')
+folder = 'res/XS_gen_eq_500/'
+create_models(500, folder, fuel_type='eq')
 
 
 from core_models.reference import create_the_model
