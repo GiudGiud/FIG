@@ -1,11 +1,11 @@
-from core_models.temp_fb import create_feedback_models
-
-folder = 'res/temp_coef/flibe/'
-gen_dir_name = folder
-create_feedback_models(gen_dir_name, 'flibe')
-folder = 'res/temp_coef/fuel/'
-gen_dir_name = folder
-create_feedback_models(gen_dir_name, 'fuel')
+# from core_models.temp_fb import create_feedback_models
+#
+# folder = 'res/temp_coef/flibe/'
+# gen_dir_name = folder
+# create_feedback_models(gen_dir_name, 'flibe')
+# folder = 'res/temp_coef/fuel/'
+# gen_dir_name = folder
+# create_feedback_models(gen_dir_name, 'fuel')
 #
 #gen_dir_name = 'res/multi_zones/ref/rods_272/'
 #create_the_model(gen_dir_name,
@@ -21,8 +21,11 @@ create_feedback_models(gen_dir_name, 'fuel')
 
 from core_models.XS_gen import create_models
 
-folder = 'res/XS_gen_eq_10/'
-create_models(10, folder, fuel_type='eq')
+N_fuel_T = 5
+N_salt_T = 5
+N = 5 * N_fuel_T * N_salt_T
+folder = 'res/XS_gen_eq_'+str(N)+'/'
+create_models(N, folder, fuel_type='fresh')
 
 
 from core_models.reference import create_the_model
