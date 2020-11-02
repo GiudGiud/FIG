@@ -43,7 +43,7 @@ class FuelPbGen(Gen):
                 str_list.append(FuelPbGen.surf1.text)
                 FuelPbGen.surf2.set_r(a_f_pb.r_config['TrLat'])
                 str_list.append(FuelPbGen.surf2.text)
-                FuelPbGen.wrote_surf = True
+                #FuelPbGen.wrote_surf = True
             cell1 = Cell()
             cell2 = Cell()
             cell3 = Cell()
