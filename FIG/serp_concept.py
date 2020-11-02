@@ -38,6 +38,9 @@ class Universe(SerpConcept):
     def setId(self, id):
         self.id = id
 
+    def resetGlobalId(self):
+        Universe.id = 1
+
 
 class Surface:
     id = 1

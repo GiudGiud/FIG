@@ -15,11 +15,15 @@ class Gen:
     def set_univId(self, id):
         self.univ.setId(id)
 
+    def get_univId(self):
+        return self.univ.id
+
     def parse(self, a_comp, type):
         if a_comp.fill is not None:
             return a_comp.fill.generate_output()
         else:
             return ''
+
     def parse_capture_det(self, a_comp, type):
         if type == 's':
             str_list = []
