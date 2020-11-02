@@ -21,6 +21,8 @@ from blanket import Blanket
 # from shield import Shield
 from fuel import Fuel
 
+from collections import OrderedDict
+
 class Core(Comp):
 
     def __init__(
@@ -49,12 +51,12 @@ class Core(Comp):
             packing_fraction=0.6,
             purpose='keff'):
       '''
-      fuel_prop: (fuel_mat_temps, coating_temps, central graphtie temp, shell temp, burnup_list)
+      fuel_prop: (fuel_mat_temps, coating_temps, central graphite temp, shell temp, burnup_list)
       hasRods: if the rods are inserted in the four axial segments
       purpose: purpose of the model, can be for 'XS_gen', 'keff', ...
       '''
       self.purpose = purpose
-      self.comp_dict = {}
+      self.comp_dict = OrderedDict()
       self.add_CR(temp_CR, temp_rod_CRCC, temp_cool_CRCC, hasRods)
       self.add_OR(temp_OR, temp_g_ORCC, temp_cool_ORCC, hasShield)
       self.add_Fuel(
@@ -198,7 +200,7 @@ class Core(Comp):
         '''
         liner
         '''
-        self.CR.comp_dict = {}
+        self.CR.comp_dict = OrderedDict()
         # ---------------------------------------------------------
         # center reflector
         # entrance zone
@@ -233,7 +235,7 @@ class Core(Comp):
         self.CR.zb_act = self.CR.zt_div
         self.CR.zt_act = 430.50
         self.CR.r_act = 35
-        self.CR.act = CylComp(temp, name, 
+        self.CR.act = CylComp(temp, name,
                               self.CR.mat_list, self.CR.zb_act,
                               self.CR.zt_act, self.CR.r_act,
                               fill=self.CR.fill)
@@ -387,7 +389,7 @@ class Core(Comp):
         # --------------------------------------------------------
         # Outer reflector
         self.OR.r_outer = or_OR   # outer radius for the whole o_ref
-        self.OR.comp_dict = {}
+        self.OR.comp_dict = OrderedDict()
 
         # entrance zone
         self.OR.zb_ent = 41.6
@@ -441,7 +443,7 @@ class Core(Comp):
     def define_ORCC(self, temp, name):
         # --------------------------------------------------------
         # Outer reflector with coolant channel
-        self.ORCC.comp_dict = {}
+        self.ORCC.comp_dict = OrderedDict()
 
         # entrance zone
         #self.ORCC.zb_ent = self.OR.zb_ent
@@ -543,7 +545,7 @@ class Core(Comp):
         # ---------------------------------------------------------
         # fuel zone
         # --------------------------------------------------------
-        self.FuelA1.comp_dict = {}
+        self.FuelA1.comp_dict = OrderedDict()
         self.FuelA1.zb_act = self.OR.zt_div
         self.FuelA1.zt_act = self.CR.zt_act
         self.FuelA1.ro_act = 46.1
@@ -560,7 +562,7 @@ class Core(Comp):
         # ---------------------------------------------------------
         # fuel zone
         # --------------------------------------------------------
-        self.FuelA2.comp_dict = {}
+        self.FuelA2.comp_dict = OrderedDict()
         # active zone
         self.FuelA2.zb_act = self.FuelA1.zb_act
         self.FuelA2.zt_act = self.FuelA1.zt_act
@@ -579,7 +581,7 @@ class Core(Comp):
         # ---------------------------------------------------------
         # fuel zone
         # --------------------------------------------------------
-        self.FuelA3.comp_dict = {}
+        self.FuelA3.comp_dict = OrderedDict()
         # active zone
         self.FuelA3.zb_act = self.FuelA1.zb_act
         self.FuelA3.zt_act = self.FuelA1.zt_act
@@ -598,7 +600,7 @@ class Core(Comp):
         # ---------------------------------------------------------
         # fuel zone
         # --------------------------------------------------------
-        self.FuelA4.comp_dict = {}
+        self.FuelA4.comp_dict = OrderedDict()
         # active zone
         self.FuelA4.zb_act = self.FuelA1.zb_act
         self.FuelA4.zt_act = self.FuelA1.zt_act
@@ -617,7 +619,7 @@ class Core(Comp):
         # ---------------------------------------------------------
         # fuel zone
         # --------------------------------------------------------
-        self.FuelW.comp_dict = {}
+        self.FuelW.comp_dict = OrderedDict()
         # entrance zone
         self.FuelW.zb_ent = 41.6  # in design report fuel pb starts at 41.6cm
         self.FuelW.zt_ent = self.OR.zt_ent
@@ -696,7 +698,7 @@ class Core(Comp):
                                          fill=self.FuelW.fill)
         self.FuelW.comp_dict['div3'] = self.FuelW.div3
 
-        # convergeing zone
+        # converging zone
         self.FuelW.zb_conv = self.CR.zt_act
         self.FuelW.zt_conv = self.CR.zt_conv
         self.FuelW.ri_conv = self.CR.r_conv
@@ -739,7 +741,7 @@ class Core(Comp):
         # -------------------------------------------------------------
         # Blanket
         # ------------------------------------------------------------
-        self.Blanket.comp_dict = {}
+        self.Blanket.comp_dict = OrderedDict()
         # entrance zone
         self.Blanket.zb_ent = 41.6  # in design report 41.6
         self.Blanket.zt_ent = self.OR.zt_ent
@@ -837,18 +839,18 @@ class Core(Comp):
                                       self.CR.zt_defuel,
                                       fill=self.Shield.fill
                                       )
-        self.Shield.comp_dict = {}
+        self.Shield.comp_dict = OrderedDict()
         self.Shield.comp_dict['act'] = self.Shield.act
 
     def define_Corebarrel(self, temp, name, ri, ro):
         self.Corebarrel.act = AnnuCylComp(temp, name,
                                           self.Corebarrel.mat_list,
-                                          ri, 
+                                          ri,
                                           ro,
                                           self.CR.zb_ent,
                                           self.CR.zt_defuel,
                                           fill=self.Corebarrel.fill)
-        self.Corebarrel.comp_dict = {}
+        self.Corebarrel.comp_dict = OrderedDict()
         self.Corebarrel.comp_dict['act'] = self.Corebarrel.act
 
     def define_Downcomer(self, temp, name, ri, ro):
@@ -859,7 +861,7 @@ class Core(Comp):
                                          self.CR.zb_ent,
                                          self.CR.zt_defuel,
                                          fill=self.Downcomer.fill)
-        self.Downcomer.comp_dict = {}
+        self.Downcomer.comp_dict = OrderedDict()
         self.Downcomer.comp_dict['act'] = self.Downcomer.act
 
     def define_Vessel(self, temp, name, ri, ro):
@@ -871,7 +873,7 @@ class Core(Comp):
                                       self.CR.zt_defuel,
                                       fill=self.Vessel.fill
                                       )
-        self.Vessel.comp_dict = {}
+        self.Vessel.comp_dict = OrderedDict()
         self.Vessel.comp_dict['act'] = self.Vessel.act
 
     def collect_mat(self):
@@ -881,4 +883,3 @@ class Core(Comp):
                 if mat not in mat_list:
                     mat_list.append(mat)
         return mat_list
-

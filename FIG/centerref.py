@@ -26,7 +26,7 @@ class CRCC(Comp):
         name = 'CRCC'
         Comp.__init__(self, temp_rod_CRCC, name, [B4C(temp_rod_CRCC), SiC(temp_rod_CRCC)])
         # center reflector control rod channel, 4 axial zones
-        CRCC_1= CRCC_axial_segment(temp_rod_CRCC, temp_cool_CRCC, temp_gr, 572.85, 430.85, hasCR=hasRods[0], hasLiner=False)
+        CRCC_1 = CRCC_axial_segment(temp_rod_CRCC, temp_cool_CRCC, temp_gr, 572.85, 430.85, hasCR=hasRods[0], hasLiner=False)
         CRCC_2 = CRCC_axial_segment(temp_rod_CRCC, temp_cool_CRCC, temp_gr, 430.85, 272, hasCR=hasRods[1], hasLiner=False)
         CRCC_3 = CRCC_axial_segment(temp_rod_CRCC, temp_cool_CRCC, temp_gr, 272, 112.5, hasCR=hasRods[2], hasLiner=False)
         CRCC_4 = CRCC_axial_segment(temp_rod_CRCC, temp_cool_CRCC, temp_gr, 112.5, 41.6, hasCR=hasRods[3], hasLiner=False)
@@ -142,7 +142,7 @@ class CRCC_liner(Comp):
         else:
           fillu = FlibeU(temp)
           mat = Flibe(temp)
-        self.liner_thickness = liner_thickness 
+        self.liner_thickness = liner_thickness
         Comp.__init__(self, temp, name, [mat], fill=fillu)
         self.define_comps(zb, zt, locations)
 
@@ -220,4 +220,3 @@ class Control_rod(Comp):
                               1,
                               fill=self.fill)
               self.comp_dict[str(i)+'rod'] = rod
-
