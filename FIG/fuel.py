@@ -15,14 +15,20 @@ class Fuel(Comp):
                  name = 'FuelZone',
                  packing_fraction=0.6):
         self.gen_dir_name = dir_name
+
+        random = False
+        if "act" in name:
+            random = True
         fpb_list = self.create_a_pb_unit_cell(fpb_prop, name)
         self.unit_cell = FuelUnitCell(fpb_list,
                                       cool_temp,
                                       packing_fraction=packing_fraction,
-                                      dir_name=dir_name)
+                                      dir_name=dir_name,
+                                      random=random)
         self.unit_cell_lat = PBedLat(self.unit_cell,
                                      self.unit_cell.pitch,
-                                     dir_name=dir_name)
+                                     dir_name=dir_name,
+                                     random=random)
         Comp.__init__(self, fpb_list[0].temp, name,
                       self.unit_cell_lat.mat_list,
                       gen=Gen(dir_name),
@@ -48,16 +54,16 @@ class Fuel(Comp):
         unique_burnups = list(unique_everseen(burnups))
         unique_burnup_nb = len(unique_burnups)
         assert fuel_temps.shape[0] == unique_burnup_nb, 'wrong dimension %s' %str(fuel_temps.shape)
-        assert coating_temps.shape[0] == unique_burnup_nb, 'wrong dimension' 
+        assert coating_temps.shape[0] == unique_burnup_nb, 'wrong dimension'
 
         # create a list of unique pebbles
         for i, bu in enumerate(unique_burnups):
             pb_name = 'pb%s%d' % (uc_name, bu)
-            unique_fpb_list[bu] = self.create_a_fuel_pebble(fuel_temps[bu-1, :], 
+            unique_fpb_list[bu] = self.create_a_fuel_pebble(fuel_temps[bu-1, :],
                                                             coating_temps[unique_burnups[i]-1, :],
                                                             cgt, sht,
                                                             pb_name,
-                                                            unique_burnups[i], 
+                                                            unique_burnups[i],
                                                             pb_comp_dir)
         # create a list of all the 14 fuel pebbles, some of them are exactly the same
         for bu in burnups:
@@ -95,12 +101,12 @@ class Fuel(Comp):
         # create triso particle
         if coating_temps.shape == (1,):
             tr = triso.Triso(coating_temps,
-                             fuels, 
+                             fuels,
                              dr_config='homogenized',
                              dir_name=self.gen_dir_name)
         else:
             tr = triso.Triso(coating_temps,
-                             fuels, 
+                             fuels,
                              dr_config=None,
                              dir_name=self.gen_dir_name)
         return pb.FPb(tr, cgt, sht, dir_name=self.gen_dir_name)

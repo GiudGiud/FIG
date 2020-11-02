@@ -49,7 +49,7 @@ class FCC(PBed):
                  gen=FCCGen('serp_input/')):
         assert(len(pb_list) == 14), "pb_list length is not 14, but %d" % len(
             pb_list)
-        self.packing_fraction = packing_fraction 
+        self.packing_fraction = packing_fraction
         self.pitch = round(math.pow(4/3.0*math.pi*math.pow(0.15, 3)*4/packing_fraction, 1/3.0)/2*10, 6)
         #2.27541  # fcc pitch for 3cm diam pb at packing frac = 40%
         PBed.__init__(self, coolant, pb_list,
@@ -61,11 +61,12 @@ class FuelUnitCell(FCC):
 
     def __init__(self, fpb_list, cool_temp,
                  packing_fraction=0.60,
-                 dir_name='serp_input/'):
+                 dir_name='serp_input/',
+                 random=False):
         self.cool = FlibeU(cool_temp, 'FuelFCCCoolant')
         FCC.__init__(self, self.cool, fpb_list, packing_fraction,
                      dir_name=dir_name,
-                     gen=FCCGen(dir_name))
+                     gen=FCCGen(dir_name, random=random))
 
 
 class GraphiteUnitCell(FCC):
@@ -91,9 +92,9 @@ class GraphiteUnitCell(FCC):
 
 class PBedLat(Comp):
 
-    ''' Lattice of pebble bed(Fcc unit cell) '''
+    ''' Lattice of pebble bed (Fcc unit cell) '''
 
-    def __init__(self, pbed, pitch, dir_name='serp_input'):
+    def __init__(self, pbed, pitch, dir_name='serp_input',random=False):
         ''' arg:
             pbed: fuel pebble or graphite pebble unit cell
             pitch: pitch between two fcc unit cells
@@ -103,4 +104,4 @@ class PBedLat(Comp):
         mat_list = pbed.mat_list
         self.pbed = pbed
         Comp.__init__(self, pbed.temp, name,
-                      mat_list, gen=PBedLatGen(dir_name))
+                      mat_list, gen=PBedLatGen(dir_name, random))
