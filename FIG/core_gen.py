@@ -14,8 +14,9 @@ class CoreGen(Gen):
             str_list = []
             # define title and library path
             str_list.append('''%%---Cross section data library path\n''')
-            str_list.append('set title "FHR core"\n' +
-                            'set acelib "/hpc-common/data/serpent/xsdata/endfb7u"\n')
+            str_list.append('set title "FHR core"\n')# +
+                            #'set acelib "/hpc-common/data/serpent/xsdata/endfb7u"\n')
+                            # use SERPENT_DATA and SERPENT_ACELIB variables instead
 
             univ_id_dict = {}
             if True: #a_core.purpose == 'XS_gen':
@@ -50,7 +51,6 @@ class CoreGen(Gen):
                 comp_str.append('\n%%---%s\n' % key1)
 
                 univ_id = univ_id_dict[key1]
-                # print(univ_id, key1)
 
                 for key2 in a_core.comp_dict[key1].comp_dict:
                     comp_str.append('%%---%s\n' % key2)
@@ -183,7 +183,11 @@ class CoreGen(Gen):
                 str_list.append('\n%%---Plot the geometry\n')
                 str_list.append('plot 1 775 1591 0 0 175 0 531 %% yz cross plane at x=0\n')
                 str_list.append('plot 2 775 1591 0 0 175 0 531 %% xz cross plane at y=0\n')
-                str_list.append('plot 3 175 175 300 %% xy cross plane at z=300\n')
+                str_list.append('plot 2 500 500 0 45 50 210 215 %% xz cross plane at y=0\n')
+
+                for i in range(10):
+                    z_slice = str(300+20*i)
+                    str_list.append('plot 3 800 800 '+z_slice+' -150 150 -150 150 %% xy cross plane at z='+str(300+20*i)+'\n')
 
             return ''.join(str_list)
 
