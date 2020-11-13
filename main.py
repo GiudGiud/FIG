@@ -23,7 +23,8 @@ from core_models.XS_gen import create_models
 
 N_fuel_T = 5
 N_salt_T = 5
-N = 5 * N_fuel_T * N_salt_T
+N_graphite_T = 5
+N = 5 * N_fuel_T * N_salt_T * N_graphite_T
 folder = 'res/XS_gen_eq_'+str(N)+'/'
 create_models(N, folder, fuel_type='fresh')
 
@@ -33,5 +34,5 @@ from core_models.reference import create_the_model
 gen_dir_name = 'res/reference_no_xe/'
 create_the_model(gen_dir_name,
                 hasRods=[False, False, False, False],
-                fuel_type='eq',
+                fuel_type='fresh',
                 packing_fraction=0.60)
