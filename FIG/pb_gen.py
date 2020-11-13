@@ -28,9 +28,10 @@ class GPbGen(Gen):
 class FuelPbGen(Gen):
     wrote_surf = False
 
-    def __init__(self, dir_name):
+    def __init__(self, dir_name, random=False):
         self.univ = Universe()
         self.dir_name = dir_name
+        self.random = random
 
     def parse(self, a_f_pb, type):
         if type == 's':
@@ -51,6 +52,9 @@ class FuelPbGen(Gen):
                            if cg.__class__.__name__=='CentralGraphite').temp
             shell_temp = next(shell for shell in a_f_pb.mat_list
                            if shell.__class__.__name__=='Shell').temp
+            if self.random:
+                self.univ.id = int(1e6 + int(self.random)) 
+
             str_list.append(
                 '%%---Fuel pebble\n' +
                 'cell %d %d CG%d -%d\n' %

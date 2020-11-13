@@ -18,7 +18,7 @@ class GPb(Comp):
 
 class FPb(Comp):
 
-    def __init__(self, triso, cg_temp, shell_temp, dir_name='serp_input/'):
+    def __init__(self, triso, cg_temp, shell_temp, dir_name='serp_input/', random=False):
         '''
         cg_temp: central graphite kernel temperature
         '''
@@ -42,7 +42,7 @@ class FPb(Comp):
             self.triso.temp,
             self.name,
             mat,
-            FuelPbGen(dir_name))
+            FuelPbGen(dir_name, random))
 
     def calculate_r(self):
         self.r_config = {}

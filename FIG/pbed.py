@@ -104,4 +104,4 @@ class PBedLat(Comp):
         mat_list = pbed.mat_list
         self.pbed = pbed
         Comp.__init__(self, pbed.temp, name,
-                      mat_list, gen=PBedLatGen(dir_name, random))
+                      mat_list, gen=PBedLatGen(dir_name, random=random))

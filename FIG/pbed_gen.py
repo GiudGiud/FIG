@@ -74,7 +74,7 @@ class FCCGen(Gen):
         if not self.random:
             file_name = self.generate_pos_file(a_fcc, dir_loc, self.pbed_file_prefix_and_id)
         else:
-            file_name = "../../same_univ2"
+            file_name = "../../pebbles_a"+self.random
         # print("Parsing", FCCGen.file_id, type, file_name)
         return self.parse1(a_fcc, file_name, 's')
 

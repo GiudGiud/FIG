@@ -10,6 +10,8 @@ from mat_gen import MatGen
 from comparable_object import CmpObj
 import math
 
+rgb_fuel = [255, 255, 255] #[255, 75, 134]
+
 class Mat(CmpObj):
 
     def __init__(
@@ -79,7 +81,7 @@ class Isotope:
 class Fuel(Mat):
 
     def __init__(self, temp, name,
-                 input_file, tmp_card=True, rgb=[255, 75, 134]):
+                 input_file, tmp_card=True, rgb=rgb_fuel):
         '''
         the input_file only contains isotope name and fractions, this init
         funct will calculate lib_id according to the temperature
@@ -168,7 +170,7 @@ class Matrix(Mat):
     graphite matrix around TRISO particles
     '''
 
-    def __init__(self, temp, tmp_card=True, rgb=[255, 75, 134]):
+    def __init__(self, temp, tmp_card=True, rgb=rgb_fuel):
         mat_comp = []
         self.temp = temp
         lib_id = self.calc_lib_id(temp)
@@ -192,7 +194,7 @@ class CMatrix(Mat):
     the isotope ratios are taken from Tommy's mcnp input Mark1.txt material m11
     '''
 
-    def __init__(self, temp, tmp_card=True, rgb=[255, 75, 134]):
+    def __init__(self, temp, tmp_card=True, rgb=rgb_fuel):
         mat_comp = []
         self.temp = temp
         lib_id = self.calc_lib_id(temp)
@@ -208,7 +210,7 @@ class CMatrix(Mat):
 class Shell(Mat):
     # graphite shell in the pebbles
 
-    def __init__(self, temp, tmp_card=True, rgb=[255, 75, 134]):
+    def __init__(self, temp, tmp_card=True, rgb=rgb_fuel):
         self.density = 1.75
         #isotopes = ['6000']
         #ratio_list = [1]
@@ -238,7 +240,7 @@ class Shell(Mat):
 class CentralGraphite(Mat):
     # graphite core in the pebbles
 
-    def __init__(self, temp, tmp_card=True, rgb=[255, 75, 134]):
+    def __init__(self, temp, tmp_card=True, rgb=rgb_fuel):
         self.density = 1.59368
         #isotopes = ['6000']
         #ratio_list = [1]
@@ -395,7 +397,7 @@ class Graphite(Mat):
 
     def __init__(self, temp, tmp_card=True, rgb=[139, 147, 147]):
         self.temp = temp
-        self.density = 1.74 # from tommy's thesis graphite based components(reflectors, etc.) 
+        self.density = 1.74 # from tommy's thesis graphite based components(reflectors, etc.)
         isotopes = ['6000']
         ratio_list = [1]
         #self.mat_comp = []

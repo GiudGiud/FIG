@@ -18,8 +18,8 @@ class Fuel(Comp):
 
         random = False
         if "act" in name:
-            random = True
-        fpb_list = self.create_a_pb_unit_cell(fpb_prop, name)
+            random = name[-1]
+        fpb_list = self.create_a_pb_unit_cell(fpb_prop, name, random)
         self.unit_cell = FuelUnitCell(fpb_list,
                                       cool_temp,
                                       packing_fraction=packing_fraction,
@@ -36,8 +36,8 @@ class Fuel(Comp):
 
     def create_a_pb_unit_cell(self,
                               fpb_prop,
-                              uc_name
-                              ):
+                              uc_name,
+                              random=False):
         '''
         fpb_prop: a tuple contains:
             fuel_temps: temperature list for unique pebbles in the unit cell
@@ -64,7 +64,9 @@ class Fuel(Comp):
                                                             cgt, sht,
                                                             pb_name,
                                                             unique_burnups[i],
-                                                            pb_comp_dir)
+                                                            pb_comp_dir,
+                                                            random)
+
         # create a list of all the 14 fuel pebbles, some of them are exactly the same
         for bu in burnups:
             fpb_list.append(unique_fpb_list[bu])
@@ -76,7 +78,8 @@ class Fuel(Comp):
                              cgt, sht,
                              pbname,
                              burnup,
-                             pb_comp_dir):
+                             pb_comp_dir,
+                             random=False):
         '''
         create a fuel pebble, assuming all the triso particles in the pebble have the
         same temperature configurations(can have different temp in different triso
@@ -109,4 +112,4 @@ class Fuel(Comp):
                              fuels,
                              dr_config=None,
                              dir_name=self.gen_dir_name)
-        return pb.FPb(tr, cgt, sht, dir_name=self.gen_dir_name)
+        return pb.FPb(tr, cgt, sht, dir_name=self.gen_dir_name, random=random)
