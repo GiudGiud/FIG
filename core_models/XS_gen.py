@@ -14,8 +14,9 @@ import numpy as np
 from more_itertools import unique_everseen
 
 # Default ranges for salt T, fuel T and CR insertion
-temps_s = [300, 600, 900, 1200, 1500]
+temps_s = [300, 600, 900, 1200, 1500] # in K
 temps_f = [300, 600, 900, 1200, 1500]
+temps_g = [300, 600, 900, 1200, 1500]
 insertions = [[False, False, False, False],
               [True, False, False, False],
               [True, True, False, False],
@@ -58,7 +59,7 @@ def create_models(sample_nb,
         temps_mat = sample_temperature(burnup_nb, fuel_nb, coating_nb, sample_nb)
     else:
         temps_mat = {}
-        temps_mat['sol'] = [np.tile(temps_f[(i//len(temps_s)) % len(temps_f)], (burnup_nb, fuel_nb)) for i in range(sample_nb)]
+        temps_mat['sol'] = [np.tile(temps_f[i//(len(temps_s) * len(temps_g)) % len(temps_f)], (burnup_nb, fuel_nb)) for i in range(sample_nb)]
         temps_mat['liq'] = []
         temps_mat['CR'] = []
     mkdir(gen_dir_name)
@@ -77,36 +78,45 @@ def create_models(sample_nb,
         FuelPbGen.wrote_surf = False
         FCCGen.file_id = 0
 
+        # Fuel core temperature
         tempsf = temps[:, 0:fuel_nb]
-        tempst = np.ones((burnup_nb, coating_nb)) * 900
+        Tfuel = tempsf[0][0]
+        tempst = np.ones((burnup_nb, coating_nb)) * Tfuel
 
+        # Coolant with pebbles temperature
         if random_grid:
             tempst = temps[:, fuel_nb:fuel_nb+coating_nb]
             temp_cool = temps_mat['liq'][case]
         else:
             temp_cool = temps_s[case % (len(temps_s))]
-            hasRods = insertions[case // ((len(temps_s)) * (len(temps_f)))]
+            hasRods = insertions[case // (len(temps_s) * len(temps_f) * len(temps_g))]
+
+        # Outer structures temperature
+        temp_g = temps_g[case // (len(temps_s)) % len(temps_g)]
+
+        # Check temperature
+        print(temp_cool, temp_g, tempsf[0][0], np.sum(hasRods))
 
         output_dir_name = gen_dir_name + 'input%d/' % case
         if not random_grid:
-            output_dir_name = gen_dir_name + '/' + str(temp_cool) + '_' + str(tempsf[0][0]) + '_' + str(sum(hasRods)) + '/'
+            output_dir_name = gen_dir_name + '/' + str(temp_cool) + '_' + str(tempsf[0][0]) + '_' + str(temp_g) + '_' + str(sum(hasRods)) + '/'
 
         core = Core(
-            (tempsf, tempst, 900, 900, 'w', burnups_w,  fuel_comp_folder_w),
-            (tempsf, tempst, 900, 900, 'a1', burnups_a, fuel_comp_folder_a),
-            (tempsf, tempst, 900, 900, 'a2', burnups_a, fuel_comp_folder_a),
-            (tempsf, tempst, 900, 900, 'a3', burnups_a, fuel_comp_folder_a),
-            (tempsf, tempst, 900, 900, 'a4', burnups_a, fuel_comp_folder_a),
-            600+273.15,  # temp_CR
-            600+273.15,  # temp_g_CRCC
-            600+273.15,  # temp_cool_CRCC, has to be equal to temp_cool_F or temp_cool_B for now, O/W flibeMaterial will be missing
-            600+273.15,  # temp_OR
-            600+273.15,  # temp_g_ORCC
-            600+273.15,  # temp_cool_ORCC
-            temp_cool,  # temp_cool_F
-            650+273.15,  # temp_blanket
-            650+273.15,  # temp_cool_B
-            600+273.15,  # temp_Corebarrel
+            (tempsf, tempst, Tfuel, Tfuel, 'w', burnups_w,  fuel_comp_folder_w),
+            (tempsf, tempst, Tfuel, Tfuel, 'a1', burnups_a, fuel_comp_folder_a),
+            (tempsf, tempst, Tfuel, Tfuel, 'a2', burnups_a, fuel_comp_folder_a),
+            (tempsf, tempst, Tfuel, Tfuel, 'a3', burnups_a, fuel_comp_folder_a),
+            (tempsf, tempst, Tfuel, Tfuel, 'a4', burnups_a, fuel_comp_folder_a),
+            temp_g,  # temp_CR
+            temp_g,  # temp_g_CRCC
+            temp_cool,  # temp_cool_CRCC, has to be equal to temp_cool_F or temp_cool_B for now, O/W flibeMaterial will be missing
+            temp_g,  # temp_OR
+            temp_g,  # temp_g_ORCC
+            temp_cool,  # temp_cool_ORCC
+            temp_cool,  # temp_cool_Fuel
+            temp_cool,  # temp_blanket
+            temp_cool,  # temp_cool_Blanket
+            600+273.15,  # temp_Corebarrel  #too far from the core, does not matter
             600+273.15,  # temp_Downcomer
             600+273.15,  # temp_vessel
             output_dir_name,
