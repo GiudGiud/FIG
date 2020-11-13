@@ -1,0 +1,58 @@
+#!/bin/bash
+# FOR SAWTOOTH
+#PBS -l select=1:ncpus=40:mem=130gb
+#PBS -N fhr-sss
+#PBS -l walltime=04:00:00
+#PBS -ko
+#PBS -j oe
+#PBS -P NEAMS
+#PBS -l software=Serpent
+#PBS -W umask=0001
+
+#  Modules loading -------------------------------------------------------------
+source /etc/profile.d/modules.sh
+module load use.exp_ctl
+module load serpent/2.1.31-intel-19.0
+
+#  Print info ------------------------------------------------------------------
+cat $PBS_NODEFILE
+which sss2
+
+# Move into the workdire -------------------------------------------------------
+cd $PBS_O_WORKDIR
+
+# Clean the directory ----------------------------------------------------------
+rm -f *.png
+rm -f *.seed
+rm -f *.m
+rm -f *.out
+rm -f $PBS_JOBNAME*
+
+# Link PBS JOBFILE -------------------------------------------------------------
+JOB_NUM=${PBS_JOBID%\.*}
+if [ $PBS_O_WORKDIR != $HOME ]
+then
+  ln -s $HOME/$PBS_JOBNAME.o$JOB_NUM $PBS_JOBNAME.o$JOB_NUM
+fi
+
+# Export environment vars ------------------------------------------------------
+export TMPDIR=/tmp
+export GOMP_CPU_AFFINITY=0-40
+
+# Start the timer --------------------------------------------------------------
+SECONDS=0
+
+# Main -------------------------------------------------------------------------
+mpiexec -n 4 sss2 serp_full_core -omp 10
+
+# Print Runtime ----------------------------------------------------------------
+time_info=SECONDS
+echo '--------------------------------'
+printf "TIMING: %02d:%02d:%02d\n" $(($time_info / 3600)) $(($time_info % 3600 /60)) $(($time_info % 60))
+
+# Move PBS JOBFILE -------------------------------------------------------------
+if [ $PBS_O_WORKDIR != $HOME ]
+then
+  rm $PBS_O_WORKDIR/$PBS_JOBNAME.o$JOB_NUM
+  mv $HOME/$PBS_JOBNAME.o$JOB_NUM $PBS_O_WORKDIR/$PBS_JOBNAME.o$JOB_NUM
+fi
