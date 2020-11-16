@@ -108,8 +108,8 @@ def create_models(sample_nb,
             (tempsf, tempst, Tfuel, Tfuel, 'a3', burnups_a, fuel_comp_folder_a),
             (tempsf, tempst, Tfuel, Tfuel, 'a4', burnups_a, fuel_comp_folder_a),
             temp_g,  # temp_CR
-            temp_g,  # temp_g_CRCC
-            temp_cool,  # temp_cool_CRCC, has to be equal to temp_cool_F or temp_cool_B for now, O/W flibeMaterial will be missing
+            temp_g,  # temp_g_CRCC, both CR and Flibe when CR is out
+            temp_g,  # temp_cool_CRCC, has to be equal to temp_cool_F or temp_cool_B for now, O/W flibeMaterial will be missing
             temp_g,  # temp_OR
             temp_g,  # temp_g_ORCC
             temp_cool,  # temp_cool_ORCC

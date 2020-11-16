@@ -24,7 +24,7 @@ class CRCC(Comp):
 
     def __init__(self, temp_rod_CRCC, temp_cool_CRCC, temp_gr, hasRods):
         name = 'CRCC'
-        Comp.__init__(self, temp_rod_CRCC, name, [B4C(temp_rod_CRCC), SiC(temp_rod_CRCC)])
+        Comp.__init__(self, temp_rod_CRCC, name, [B4C(temp_rod_CRCC), SiC(temp_rod_CRCC), Flibe(temp_cool_CRCC)])
         # center reflector control rod channel, 4 axial zones
         CRCC_1 = CRCC_axial_segment(temp_rod_CRCC, temp_cool_CRCC, temp_gr, 572.85, 430.85, hasCR=hasRods[0], hasLiner=False)
         CRCC_2 = CRCC_axial_segment(temp_rod_CRCC, temp_cool_CRCC, temp_gr, 430.85, 272, hasCR=hasRods[1], hasLiner=False)

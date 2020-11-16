@@ -25,11 +25,19 @@ class CoreGen(Gen):
                 univ_id_dict['CR'] = 100000
                 univ_id_dict['CRCC'] = 100001
 
-                univ_id_dict['FuelW'] = 100002
-                univ_id_dict['FuelA1'] = 100003
-                univ_id_dict['FuelA2'] = 100004
-                univ_id_dict['FuelA3'] = 100005
-                univ_id_dict['FuelA4'] = 100006
+                multi_region = False
+                if multi_region:
+                    univ_id_dict['FuelW'] = 100002
+                    univ_id_dict['FuelA1'] = 100003
+                    univ_id_dict['FuelA2'] = 100004
+                    univ_id_dict['FuelA3'] = 100005
+                    univ_id_dict['FuelA4'] = 100006
+                else:
+                    univ_id_dict['FuelW'] = 100002
+                    univ_id_dict['FuelA1'] = 100002
+                    univ_id_dict['FuelA2'] = 100002
+                    univ_id_dict['FuelA3'] = 100002
+                    univ_id_dict['FuelA4'] = 100002
 
                 univ_id_dict['Blanket'] = 100007
 
@@ -85,8 +93,9 @@ class CoreGen(Gen):
 
             # Add all universes to cells contained in universe 0
             for i in range(N_univ):
-                str_list.append('cell c'+str(i)+' 200000 fill '+str(100000+i)+
-                                ' '+surface_strings[100000+i][:-2]+'\n')
+                if 100000+i in univ_id_dict.values():
+                    str_list.append('cell c'+str(i)+' 200000 fill '+str(100000+i)+
+                                    ' '+surface_strings[100000+i][:-2]+'\n')
 
             # Material
             filename = 'coreMaterials'
