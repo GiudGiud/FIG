@@ -25,7 +25,7 @@ class CoreGen(Gen):
                 univ_id_dict['CR'] = 100000
                 univ_id_dict['CRCC'] = 100001
 
-                multi_region = False
+                multi_region = True
                 if multi_region:
                     univ_id_dict['FuelW'] = 100002
                     univ_id_dict['FuelA1'] = 100003
@@ -71,6 +71,10 @@ class CoreGen(Gen):
                     surface_string = ''
                     for line in output_string.split('\n'):
                         surface_string = ''
+
+                        # Skip all surf lines in case surf_id == univ_id
+                        # solved by offsetting surface id
+
                         for surface_list in line.split(str(univ_id))[1:]:
                             for surface in surface_list.split(' ')[3:]:
                                 surface_string += surface + ' '
@@ -110,14 +114,14 @@ class CoreGen(Gen):
             # define neutron source and BC
             str_list.append('\n%%---Neutron source and BC\n')
             str_list.append('\n%%---set pop neutron-per-cycle cycles skip-cycles\n')
-            str_list.append('set pop 10000 2000 500\n')
+            str_list.append('set pop 100000 500 500\n')
             str_list.append('set bc 1\n')
             str_list.append('set ures 1\n')
             str_list.append('set power 2.36E8\n')
 
             # 8g but adjusted to match CASMO-70
-            str_list.append('\nene \"8g_0\" 1 0 5.8e-8 1.9e-7 5e-7 4e-6 4.8e-5 2.5e-2 1.4\n')
-            # str_list.append('\nene \"8g_1\" 1 1e-11 5.8e-8 1.8e-7 5e-7 4e-6 4.8052e-5 2.478e-2 1.353\n')
+            str_list.append('\nene \"8g_0\" 1 0 5.8e-8 1.9e-7 5e-7 4e-6 4.8e-5 2.5e-2 1.4 20\n')
+            # str_list.append('\nene \"8g_1\" 1 1e-11 5.8e-8 1.8e-7 5e-7 4e-6 4.8052e-5 2.478e-2 1.353 20\n')
             # str_list.append('\nene \"10g\" 1 1E-11 2E-08 5E-08 8E-08 2E-07 6.5E-07 8.32E-06'
             # 	'1.301E-04	3.355E-03	1.11E-01	4E+01')  #10G option
 
@@ -125,28 +129,31 @@ class CoreGen(Gen):
             # and Liquid Salt-Cooled Advanced High Temperature Reactors
             # Included in intermediate group structure though?
             # 4G also in ORNL presentation
-            # str_list.append('\nene \"4g\"  1 0 7.3000E‐07 2.9023E‐05 9.1188E‐03\n')
+            # str_list.append('\nene \"4g\"  1 0 7.3000E‐07 2.9023E‐05 9.1188E‐03 20\n')
             # str_list.append('\nene \"13g\" 1 0 1.2396E‐08 3.5500E‐08 5.6922E‐08 8.1968E‐08 1.1157E‐07'
-            #                 '1.4572E‐07 1.8443E‐07 2.2769E‐07 2.5103E‐07 2.9074E‐07 4.5E-7 1.4739E‐04\n')
+            #                 '1.4572E‐07 1.8443E‐07 2.2769E‐07 2.5103E‐07 2.9074E‐07 4.5E-7 1.4739E‐04 20\n')
 
             # From http://publications.rwth-aachen.de/record/766688/files/766688.pdf (HTR 10)
-            # str_list.append('\nene \"6g\" 0 1.2e-7 4.5e-7 3.059e-6 1.30073e-4 6.73795e-2 \n')
+            # str_list.append('\nene \"6g\" 1 0 1.2e-7 4.5e-7 3.059e-6 1.30073e-4 6.73795e-2 20\n')
 
             # From https://etda.libraries.psu.edu/files/final_submissions/3001
-            # str_list.append('\nene \"10g\" 1 0 4E-08 4.3E-7 1.6E-6 2.38E-6 3.93E-6 2.04E-3 9.12E-3 5.25E-2 8.21E-1\n')
+            # str_list.append('\nene \"10g\" 1 0 4E-08 4.3E-7 1.6E-6 2.38E-6 3.93E-6 2.04E-3 9.12E-3 5.25E-2 8.21E-1 20\n')
 
             # From Spectral zone selection methodology for pebble bed reactors
-            # str_list.append('\nene \"8g\" 1.2E-7 4.07E-7 5.285E-7 1.046E-6 2.38E-6 7.102E-3 8.21E-1\n')
+            # str_list.append('\nene \"8g\" 1 1.2E-7 4.07E-7 5.285E-7 1.046E-6 2.38E-6 7.102E-3 8.21E-1 20\n')
 
-
-            if a_core.purpose == 'XS_gen':
-                str_univ = ''
+            # Add group cross section tallies per universe
+            str_univ = ''
+            if multi_region:
                 for i in range(N_univ):
                     str_univ += str(100000+i) + ' '
-                str_list.append('set gcu '+str_univ+'\n')
-                str_list.append('set nfg 8g_0\n')
-                str_list.append('set opti 1\n')
+            else:
+                str_univ = '100000 100001 100002 100007 100008 100009'
+            str_list.append('set gcu '+str_univ+'\n')
+            str_list.append('set nfg 8g_0\n')
+            str_list.append('set opti 1\n')
 
+            # Add some reaction rate maps
             str_list.append('\n %% detectors\n')
             detnb = 1
             str_list.append('\n %% detector for reaction rates distributions\n')
