@@ -23,6 +23,9 @@ from fuel import Fuel
 
 from collections import OrderedDict
 
+# Use 41.6 to match report fuel volume
+core_lower_z = 41.6
+
 class Core(Comp):
 
     def __init__(
@@ -84,7 +87,7 @@ class Core(Comp):
                                 # not used in the serpent input files
                                 'whole_core',
                                 self.FuelA1.act.mat_list,
-                                41.6,
+                                core_lower_z,
                                 572.85,
                                 175,
                                 fill=self.FuelA1.act)
@@ -126,7 +129,8 @@ class Core(Comp):
                  temp_cool_F,
                  packing_fraction,
                  dir_name):
-      pf = packing_fraction# 0.6 nominal pf in Mk1, 0.7405 maximum attainable packing fraction in a FCC lattice
+      pf = packing_fraction
+      # 0.6 nominal pf in Mk1, 0.7405 maximum attainable packing fraction in a FCC lattice
       self.FuelW = Fuel(fuel_prop_w, temp_cool_F, dir_name, name='wall',
                         packing_fraction=pf)
       self.FuelA1 = Fuel(fuel_prop_a1, temp_cool_F, dir_name, name='act1',
@@ -204,7 +208,7 @@ class Core(Comp):
         # ---------------------------------------------------------
         # center reflector
         # entrance zone
-        self.CR.zb_ent = 41.6  # in the design, CR starts at 15.7cm
+        self.CR.zb_ent = core_lower_z  # in the design, CR starts at 15.7cm
         self.CR.zt_ent = 127.5
         self.CR.r_ent = 35+10
         self.CR.ent = CylComp(temp, name,
@@ -276,7 +280,7 @@ class Core(Comp):
         # substract CRCC's from CR
         #self.comp_dict['CR'] = CenterRefWithoutCC(self.CR, self.CRCC)
 
-#        self.CRCC.zb_act = 41.6
+#        self.CRCC.zb_act = core_lower_z
 #        self.CRCC.zt_act = self.CR.zt_conv+80
 #        self.CRCC.ri_act = self.CR.r_act
 #        self.CRCC.ro_act = self.CR.r_act + 10
@@ -292,7 +296,7 @@ class Core(Comp):
 # ---------------------------------------------------------
 # center reflector
 # entrance zone
-# self.CRCC.zb_ent = 41.6  # in the design, CR starts at 15.7cm
+# self.CRCC.zb_ent = core_lower_z  # in the design, CR starts at 15.7cm
 #        self.CRCC.zt_ent = 127.5
 #        self.CRCC.ri_ent = self.CR.r_ent
 #        self.CRCC.ro_ent = 45
@@ -392,7 +396,7 @@ class Core(Comp):
         self.OR.comp_dict = OrderedDict()
 
         # entrance zone
-        self.OR.zb_ent = 41.6
+        self.OR.zb_ent = core_lower_z
         self.OR.zt_ent = 112.5
         self.OR.r_ent = 85.74
         self.OR.ent = AnnuCylComp(temp, name,
@@ -621,7 +625,7 @@ class Core(Comp):
         # --------------------------------------------------------
         self.FuelW.comp_dict = OrderedDict()
         # entrance zone
-        self.FuelW.zb_ent = 41.6  # in design report fuel pb starts at 41.6cm
+        self.FuelW.zb_ent = core_lower_z  # in design report fuel pb starts at core_lower_zcm
         self.FuelW.zt_ent = self.OR.zt_ent
         self.FuelW.ri_ent = self.CR.r_ent
         self.FuelW.ro_ent = 75.41
@@ -743,7 +747,7 @@ class Core(Comp):
         # ------------------------------------------------------------
         self.Blanket.comp_dict = OrderedDict()
         # entrance zone
-        self.Blanket.zb_ent = 41.6  # in design report 41.6
+        self.Blanket.zb_ent = core_lower_z  # in design report core_lower_z
         self.Blanket.zt_ent = self.OR.zt_ent
         self.Blanket.ri_ent = self.FuelW.ro_ent
         self.Blanket.ro_ent = self.OR.r_ent
