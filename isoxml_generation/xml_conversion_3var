@@ -1,0 +1,10 @@
+<XSGEN Format="SERPENT2" Name="2-D_8Gt" NGroup="8" NDLGroup="6" Mode="diffusion" Transient="true" Description="2D_RZ PB-FHR - 5 zones"> <Controls>
+<EnergyUnit>MeV</EnergyUnit>
+</Controls>
+<Librarywise DataType="macro" L="1" LType="0" Transient="false"> <Tabulation>Tsalt Tfuel CR</Tabulation>
+<Tsalt>300 600 900 1200 1500</Tsalt>
+<Tfuel>300 600 900 1200 1500</Tfuel>
+<CR>0 1 2 3 4</CR>
+<AddData>Absorption Fission Total</AddData> <Directory>data/</Directory> <BaseFile></BaseFile> <BaseExtension>/serp_full_core_res.m</BaseExtension>
+</Librarywise>
+</XSGEN>

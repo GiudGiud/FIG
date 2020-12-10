@@ -36,3 +36,4 @@ create_the_model(gen_dir_name,
                 hasRods=[False, False, False, False],
                 fuel_type='fresh',
                 packing_fraction=0.60)
+print("FIX 1500 1500 1500 2 manually! (delete extra surface in Fuel cell c1)")

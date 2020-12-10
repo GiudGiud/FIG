@@ -1,0 +1,16 @@
+<XSGEN Format="SERPENT2" Name="2-D_8Gt" NGroup="8" NDLGroup="6" Mode="diffusion" Transient="true" Description="2D_RZ PB-FHR - 10 zones">
+  <Controls>
+    <EnergyUnit>MeV</EnergyUnit>
+  </Controls>
+  <Librarywise DataType="macro" L="1" LType="0" Transient="true">
+  <Tabulation>Tsalt Tfuel Treflector CR</Tabulation>
+    <Tsalt>300 600 900 1200 1500</Tsalt>
+    <Tfuel>300 600 900 1200 1500</Tfuel>
+    <Treflector>300 600 900 1200 1500</Treflector>
+    <CR>0 1 2 3 4</CR>
+    <AddData>Absorption Fission Total</AddData>
+    <Directory>XS_gen_eq_625/</Directory>
+    <BaseFile></BaseFile>
+    <BaseExtension>/serp_full_core_res.m</BaseExtension>
+  </Librarywise>
+</XSGEN>

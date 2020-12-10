@@ -14,7 +14,7 @@ class PBedGen(Gen):
         if type == 's':
             str_list = []
             stop
-            input_file = "../../same_univ2"
+            input_file = "../../pebble_locations/same_univ2"
             str_list.append(
                 '%%---Pebble unit cell with position from input file\n' +
                 'pbed %d %d "%s"\n' %
@@ -74,7 +74,7 @@ class FCCGen(Gen):
         if not self.random:
             file_name = self.generate_pos_file(a_fcc, dir_loc, self.pbed_file_prefix_and_id)
         else:
-            file_name = "../../pebbles_a"+self.random
+            file_name = "../../pebble_locations/pebbles_a"+self.random
         # print("Parsing", FCCGen.file_id, type, file_name)
         return self.parse1(a_fcc, file_name, 's')
 

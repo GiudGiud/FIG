@@ -2,7 +2,7 @@ import numpy as np
 
 Rpeb = 1.5
 
-all_pebbles = open("same_univ2", "r")
+all_pebbles = open("pebbles_cylinder_shell_06", "r")
 # all_pebbles = open("try_01", "r")
 
 pebbles_a1 = open("pebbles_a1", 'w')
