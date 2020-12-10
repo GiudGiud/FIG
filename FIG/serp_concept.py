@@ -43,7 +43,7 @@ class Universe(SerpConcept):
 
 
 class Surface:
-    id = 1
+    id = int(1e7)
 
     def __init__(self):
         self.id = Surface.id
